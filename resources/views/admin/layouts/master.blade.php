@@ -105,18 +105,18 @@
                 <!-- Blog Management -->
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
+                        <i class="nav-icon fas fa-blog"></i>
                         <p>
                             Blog Management
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview ml-2">
-                        <!-- Articles -->
+                        <!-- Posts -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-users"></i>
-                                <small>Articles</small>
+                                <i class="nav-icon fas fa-paste"></i>
+                                <small>Posts</small>
                             </a>
                         </li>
                     </ul>

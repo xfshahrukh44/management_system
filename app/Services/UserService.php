@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Repositories\UserRepository;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use JWTAuth;
+// use JWTAuth;
 // use Hash;
 
 class UserService extends UserRepository

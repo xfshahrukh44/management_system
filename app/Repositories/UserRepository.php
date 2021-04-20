@@ -145,46 +145,6 @@ abstract class UserRepository implements RepositoryInterface
         }
     }
 
-    public function paginate_staff($pagination)
-    {
-        try {
-            return $this->model::where('type', '!=', 'rider')->orderBy('created_at', 'DESC')->paginate($pagination);
-        }
-        catch (\Exception $exception) {
-            throw new AllUserException($exception->getMessage());
-        }
-    }
-
-    public function paginate_riders($pagination)
-    {
-        try {
-            return $this->model::where('type', '=', 'rider')->orderBy('created_at', 'DESC')->paginate($pagination);
-        }
-        catch (\Exception $exception) {
-            throw new AllUserException($exception->getMessage());
-        }
-    }
-
-    public function all_staff()
-    {
-        try {
-            return $this->model::where('type', '!=', 'rider')->get();
-        }
-        catch (\Exception $exception) {
-            throw new AllUserException($exception->getMessage());
-        }
-    }
-
-    public function all_riders()
-    {
-        try {
-            return $this->model::where('type', '=', 'rider')->get();
-        }
-        catch (\Exception $exception) {
-            throw new AllUserException($exception->getMessage());
-        }
-    }
-
     public function search_users($query)
     {
         $users = User::where(function($q) use($query){
