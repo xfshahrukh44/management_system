@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Post extends Model
+class Comment extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
     protected $fillable = [
-        'user_id', 'title', 'content', 'image', 'created_by', 'modified_by'
+        'user_id', 'post_id', 'content', 'is_approved', 'created_by', 'modified_by'
     ];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
@@ -35,8 +35,8 @@ class Post extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function comments()
+    public function post()
     {
-        return $this->hasMany('App\Models\Comment');
+        return $this->belongsTo('App\Models\Post');
     }
 }
