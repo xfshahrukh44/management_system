@@ -114,7 +114,7 @@
                     <ul class="nav nav-treeview ml-2">
                         <!-- Posts -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('post.index')}}" class="nav-link">
                                 <i class="nav-icon fas fa-paste"></i>
                                 <small>Posts</small>
                             </a>

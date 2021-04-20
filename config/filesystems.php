@@ -52,6 +52,11 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'public_posts' => [
+            'driver' => 'local',
+            'root' => public_path('img/posts'),
+        ],
+
     ],
 
     /*
