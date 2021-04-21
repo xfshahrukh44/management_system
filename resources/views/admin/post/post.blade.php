@@ -45,6 +45,7 @@
                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1">Image</th>
                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1">Title</th>
                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1">Author</th>
+                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1">Posted at</th>
                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1">Actions</th>
               </tr>
             </thead>
@@ -52,9 +53,10 @@
               @if(count($posts) > 0)
                 @foreach($posts as $post)
                   <tr role="row" class="odd">
-                    <td class="{{'image'.$post->id}}"><img src="{{($post->image) ? (asset('img/posts') . '/' . $post->image) : (asset('img/noimg.jpg'))}}" width="15%" alt=""></td>
+                    <td class="{{'image'.$post->id}}" width="140"><img src="{{($post->image) ? (asset('img/posts') . '/' . $post->image) : (asset('img/noimg.jpg'))}}" width="60%" alt=""></td>
                     <td class="{{'title'.$post->id}}">{{$post->title ? $post->title : NULL}}</td>
                     <td class="{{'user_id'.$post->id}}">{{$post->user ? $post->user->name : NULL}}</td>
+                    <td class="{{'created_at'.$post->id}}">{{$post->created_at ? return_date($post->created_at) : NULL}}</td>
                     <td>
                         <!-- Detail -->
                         <a href="#" class="detailButton" data-id="{{$post->id}}" data-src="{{asset('img/posts') . '/' . $post->image}}">
@@ -72,7 +74,7 @@
                   </tr>
                 @endforeach
               @else
-                <tr><td colspan="4"><h6 align="center">No post(s) found</h6></td></tr>
+                <tr><td colspan="5"><h6 align="center">No post(s) found</h6></td></tr>
               @endif
             </tbody>
             <tfoot>
@@ -126,7 +128,7 @@
         <input id="hidden" type="hidden" name="hidden">
         @include('admin.post.post_master')
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" id="createButton">Update</button>
+          <button type="submit" class="btn btn-primary" id="updateButton">Update</button>
         </div>
       </form>
     </div>
@@ -162,32 +164,40 @@
                 <table class="table table-bordered table-striped">
                     <tbody id="table_row_wrapper">
                         <tr role="row" class="odd">
-                            <td class="">Content</td>
                             <td class="content"></td>
                         </tr>
                     </tbody>
                 </table>
                 <hr style="color:gray;">
               </div>
-
               <!-- comment section -->
-              <div class="comment_wrapper col-md-12 p-4">
-                <table class="table table-bordered table-striped">
-                    <tbody id="table_row_wrapper">
-                        <thead>
+              <div class="col-md-12 p-4 comment_section">
+                <h3 class="text-center">Comments</h3>
+                <table class="table table-bordered table-striped table-sm">
+                    <thead>
+                        <tr role="row" class="odd">
                             <th>User</th>
                             <th>Content</th>
                             <th>Time</th>
-                            <th>Action</th>
-                        </thead>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_row_wrapper" class="comment_wrapper">
                         <tr role="row" class="odd">
                             <td class="comment_user">User</td>
                             <td class="comment_content">asdasdasdas</td>
                             <td class="comment_created_at">12.12.12</td>
-                            <td class="comment_content"><button type="button" class="btn btn-primary">Approve</button></td>
+                            <td class="comment_content"><button type="button" class="btn btn-primary btn-sm">Approve</button></td>
                         </tr>
                     </tbody>
                 </table>
+              </div>
+              <div class="col-md-12">
+                <label for="">Add comment</label>
+                <div class="row form-group p-4">
+                  <input type="text" class="form-control col-md-10 add_comment_content">
+                  <button type="button" class="form-control btn btn-primary btn-sm col-md-2 btn_add_comment" data-user={{(auth()->user()) ? (auth()->user()->id) : NULL}}><i class="fas fa-chevron-right"></i></button>
+                </div>
               </div>
             </div>
 
@@ -258,10 +268,10 @@ $(document).ready(function(){
       });
   }
   
-  // toggle_is_published
-  function toggle_is_published(id){
+  // approve_comment
+  function approve_comment(id, element){
     $.ajax({
-        url: '#',
+        url: `<?php echo(route('approve_comment')); ?>`,
         type: 'GET',
         data: {
           id: id
@@ -269,7 +279,26 @@ $(document).ready(function(){
         dataType: 'JSON',
         async: false,
         success: function (data) {
-          
+          element.remove();
+        }
+    });
+  }
+
+  // add_comment
+  function add_comment(post_id, user_id, comment_content){
+    $.ajax({
+        url: `<?php echo(route('comment.store')); ?>`,
+        type: 'POST',
+        data: {
+          "_token": "{{ csrf_token() }}",
+          post_id: post_id,
+          user_id: user_id,
+          content: comment_content,
+        },
+        dataType: 'JSON',
+        async: false,
+        success: function (data) {
+          alert('asd');
         }
     });
   }
@@ -291,13 +320,6 @@ $(document).ready(function(){
     var id = $(this).data('id');
     fetch_post(id);
 
-    // image gallery work
-    $('.gallery_wrapper').html('');
-    // if(post.post_images.length > 0){
-    //   for(var i = 0; i < post.post_images.length; i++){
-    //     $('.gallery_wrapper').append(`<div class="col-md-4 mb-3"><a target="_blank" href="{{asset('img/post_images')}}/`+post.post_images[i].location+`" class="col-md-12"><img class="col-md-12 shop_keeper_picture" src="{{asset('img/post_images')}}/`+post.post_images[i].location+`"></a><button class="btn btn_del_post_image" value="`+post.post_images[i].id+`" type="button"><i class="fas fa-trash red ml-1"></i></button></div>`);
-    //   }
-    // }
     $('#viewPostModal .title').html('Title: ' + post.title);
     $('#viewPostModal .user').html((post.user) ? ('By: ' + post.user.name) : '');
     $('#viewPostModal .content').html(post.content);
@@ -305,6 +327,27 @@ $(document).ready(function(){
     // image
     var src = ((post.image) ? ($(this).data('src')) : ('<?php echo(asset("img/noimg.jpg")); ?>'));
     $('#viewPostModal .image').attr('src', src);
+
+    // comments
+    if(post.comments.length > 0){
+      $('.comment_wrapper').html('');
+      for(var i = 0; i < post.comments.length; i++){
+        var comment = post.comments[i];
+
+        var user_div = `<td class="comment_user">`+(comment.user ? comment.user.name : '')+`</td>`;
+        var content_div = `<td class="comment_content">`+comment.content+`</td>`;
+        var date_div = `<td class="comment_created_at" width="140">`+new Date(comment.created_at).toDateString()+`</td>`;
+        var approve_button = (comment.is_approved == 0) ? (`@can('isAdmin')<button type="button" class="btn btn-primary btn-sm btn_approve_comment" data-id="`+comment.id+`">Approve</button>@endcan`) : (``);
+        var approve_div = `<td class="">`+approve_button+`</td>`;
+
+        var field_html = `<tr role="row" class="odd">`+user_div + content_div + date_div + approve_div+`</tr>`;
+        $('.comment_wrapper').append(field_html);
+      }
+    }
+    else{
+      $('.comment_wrapper').html('');
+      $('.comment_wrapper').append(`<tr><td colspan="4"><h6 align="center">No comments</h6></td></tr>`);
+    }
 
     $('#viewPostModal').modal('show');
   });
@@ -316,11 +359,21 @@ $(document).ready(function(){
     $('#deletePostModalLabel').text('Delete Post: ' + $('.name' + id).html() + "?");
     $('#deletePostModal').modal('show');
   });
-
-  // on .input_is_published click
-  $('.input_is_published').on('click', function(){
+  
+  // on btn_approve_comment click
+  $('#viewPostModal').on('click', '.btn_approve_comment', function(){
     var id = $(this).data('id');
-    toggle_is_published(id);
+    approve_comment(id, $(this));
+  });
+  // on btn_add_comment click
+  $('#viewPostModal').on('click', '.btn_add_comment', function(){
+    var post_id = post.id;
+    var user_id = $(this).data('user');
+    var comment_content = $('.add_comment_content').val();
+    
+    if(comment_content.length > 0){
+      add_comment(post_id, user_id, comment_content);
+    }
   });
 
 });

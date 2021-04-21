@@ -149,5 +149,13 @@ abstract class CommentRepository implements RepositoryInterface
 
         return $comments;
     }
+
+    public function approve_comment($id)
+    {
+        $comment = $this->model->find($id);
+        $comment->is_approved = 1;
+        $comment->save();
+        return 0;
+    }
     
 }

@@ -86,7 +86,7 @@ abstract class PostRepository implements RepositoryInterface
     {
         try 
         {
-            $post = $this->model::with('user')->find($id);
+            $post = $this->model::with('comments.user')->find($id);
             if(!$post)
             {
                 return [
@@ -141,6 +141,11 @@ abstract class PostRepository implements RepositoryInterface
                         ->paginate(env('PAGINATION'));
 
         return $posts;
+    }
+
+    public function add_comment($data)
+    {
+        
     }
     
 }

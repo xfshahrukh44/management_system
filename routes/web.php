@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     // API RESOURCES-------------------------------------------------
     Route::apiResources(['user'=>'Admin\UserController']);
     Route::apiResources(['post'=>'Admin\PostController']);
+    Route::apiResources(['comment'=>'Admin\CommentController']);
     // Route::apiResources(['area'=>'Admin\AreaController']);
     // Route::apiResources(['market'=>'Admin\MarketController']);
     // Route::apiResources(['category'=>'Admin\CategoryController']);
@@ -72,6 +73,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     // Route::get('/search_customer_ledgers', 'Admin\LedgerController@search_customer_ledgers')->name('search_customer_ledgers');
     // Route::get('/search_vendor_ledgers', 'Admin\LedgerController@search_vendor_ledgers')->name('search_vendor_ledgers');
     // ---------------------------------------------------------------------------------------------------------
+    
+    
+    // HELPERS---------------------------------------------------------------------------------------------------------------
+    Route::get('/approve_comment', 'Admin\CommentController@approve_comment')->name('approve_comment');
+    // ----------------------------------------------------------------------------------------------------------------------
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

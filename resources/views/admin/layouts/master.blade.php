@@ -112,6 +112,13 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview ml-2">
+                        <!-- Feed -->
+                        <li class="nav-item">
+                            <a href="{{route('post.index')}}" class="nav-link">
+                                <i class="nav-icon fas fa-rss-square"></i>
+                                <small>Feed</small>
+                            </a>
+                        </li>
                         <!-- Posts -->
                         <li class="nav-item">
                             <a href="{{route('post.index')}}" class="nav-link">

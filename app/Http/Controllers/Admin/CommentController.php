@@ -30,7 +30,7 @@ class CommentController extends Controller
     public function index()
     {
         $comments = $this->commentService->paginate(env('PAGINATE'));
-        return view('admin.comment.comment', compact('comments'));
+        // return view('admin.comment.comment', compact('comments'));
     }
 
     public function all()
@@ -50,9 +50,10 @@ class CommentController extends Controller
         if($validator->fails())
             return response()->json($validator->errors()->toArray(), 400);
 
-        $comment = ($this->commentService->create($req))['comment']['comment'];
+        $comment = ($this->commentService->create($request->all()))['comment']['comment'];
 
-        return redirect()->back();
+        // return redirect()->back();
+        return 0 ;
     }
     
     public function show($id)
@@ -99,5 +100,14 @@ class CommentController extends Controller
         $comments = $this->commentService->search_comments($query);
 
         return view('admin.comment.comment', compact('comments'));
+    }
+
+    public function approve_comment(Request $request)
+    {
+        if(!isset($request['id'])){
+            return 0;
+        }
+
+        return $this->commentService->approve_comment($request['id']);
     }
 }
