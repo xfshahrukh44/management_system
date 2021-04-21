@@ -53,7 +53,7 @@ class CommentController extends Controller
         $comment = ($this->commentService->create($request->all()))['comment']['comment'];
 
         // return redirect()->back();
-        return 0 ;
+        return 0;
     }
     
     public function show($id)
@@ -86,11 +86,10 @@ class CommentController extends Controller
     
     public function destroy(Request $request, $id)
     {
-        $id = $request->hidden;
-
         $this->commentService->delete($id);
 
-        return redirect()->back();
+        // return redirect()->back();
+        return 0;
     }
 
     public function search_comments(Request $request)

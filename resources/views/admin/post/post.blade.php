@@ -246,8 +246,10 @@ $(document).ready(function(){
   //   "bInfo": false,
   //   "searching":false
   // });
+
   // global vars
   var post = "";
+  
   // persistent active sidebar
   var element = $('li a[href*="'+ window.location.pathname +'"]');
   element.parent().parent().parent().addClass('menu-open');
@@ -280,6 +282,27 @@ $(document).ready(function(){
         async: false,
         success: function (data) {
           element.remove();
+          toastr["success"]("Comment Approved", "Success");
+        }
+    });
+  }
+
+  // delete_comment
+  function delete_comment(id, element){
+    var url = `<?php echo(route('comment.destroy', 0)); ?>`;
+    url = url.replace('0', id);
+    $.ajax({
+        url: url,
+        type: 'DELETE',
+        data: {
+          "_token": "{{ csrf_token() }}",
+          id: id
+        },
+        dataType: 'JSON',
+        async: false,
+        success: function (data) {
+          element.parent().parent().remove();
+          toastr["success"]("Comment Deleted", "Success");
         }
     });
   }
@@ -298,7 +321,7 @@ $(document).ready(function(){
         dataType: 'JSON',
         async: false,
         success: function (data) {
-          alert('asd');
+          alert('Comment added.');
         }
     });
   }
@@ -337,8 +360,9 @@ $(document).ready(function(){
         var user_div = `<td class="comment_user">`+(comment.user ? comment.user.name : '')+`</td>`;
         var content_div = `<td class="comment_content">`+comment.content+`</td>`;
         var date_div = `<td class="comment_created_at" width="140">`+new Date(comment.created_at).toDateString()+`</td>`;
-        var approve_button = (comment.is_approved == 0) ? (`@can('isAdmin')<button type="button" class="btn btn-primary btn-sm btn_approve_comment" data-id="`+comment.id+`">Approve</button>@endcan`) : (``);
-        var approve_div = `<td class="">`+approve_button+`</td>`;
+        var approve_button = (comment.is_approved == 0) ? (`@can('isAdmin')<a href="#" class="btn_approve_comment p-1" style="color:green;" data-id="`+comment.id+`"><i class="fas fa-check-double"></i></a>@endcan`) : (``);
+        var delete_button = `@can('isAdmin')<a href="#" class="btn_delete_comment p-1" style="color:red;" data-id="`+comment.id+`"><i class="fas fa-trash"></i></a>@endcan`;
+        var approve_div = `<td class="">`+ approve_button + delete_button +`</td>`;
 
         var field_html = `<tr role="row" class="odd">`+user_div + content_div + date_div + approve_div+`</tr>`;
         $('.comment_wrapper').append(field_html);
@@ -364,6 +388,11 @@ $(document).ready(function(){
   $('#viewPostModal').on('click', '.btn_approve_comment', function(){
     var id = $(this).data('id');
     approve_comment(id, $(this));
+  });
+  // on btn_delete_comment click
+  $('#viewPostModal').on('click', '.btn_delete_comment', function(){
+    var id = $(this).data('id');
+    delete_comment(id, $(this));
   });
   // on btn_add_comment click
   $('#viewPostModal').on('click', '.btn_add_comment', function(){

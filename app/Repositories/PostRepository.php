@@ -136,16 +136,10 @@ abstract class PostRepository implements RepositoryInterface
 
         // search block
         $posts = Post::where('title', 'LIKE', '%'.$query.'%')
-                        ->orWhereIn('user_ids', $user_idss)
-                        ->orWhere('content', 'LIKE', '%'.$query.'%')
+                        ->orWhereIn('user_id', $user_ids)
+                        // ->orWhere('content', 'LIKE', '%'.$query.'%')
                         ->paginate(env('PAGINATION'));
 
         return $posts;
     }
-
-    public function add_comment($data)
-    {
-        
-    }
-    
 }

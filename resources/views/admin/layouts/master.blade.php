@@ -15,9 +15,9 @@
   <!-- <script type="text/javascript" src="{{asset('plugins/jquery-ui/jquery-ui.js')}}"></script> -->
 
   <!-- toastr js -->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <!-- toastr css -->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
 
   <!-- local css -->
   <link rel="stylesheet" href="{{asset('css/app.css')}}">
@@ -113,12 +113,12 @@
                     </a>
                     <ul class="nav nav-treeview ml-2">
                         <!-- Feed -->
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="{{route('post.index')}}" class="nav-link">
                                 <i class="nav-icon fas fa-rss-square"></i>
                                 <small>Feed</small>
                             </a>
-                        </li>
+                        </li> -->
                         <!-- Posts -->
                         <li class="nav-item">
                             <a href="{{route('post.index')}}" class="nav-link">
@@ -192,6 +192,27 @@
 
 <!-- pusher -->
 <!-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> -->
+
+<!-- toastr init -->
+<script>
+  toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": false,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+</script>
 
 @yield('content_script')
 </body>

@@ -37,6 +37,6 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->hasMany('App\Models\Comment')->orderBy('is_approved', 'ASC');
+        return $this->hasMany('App\Models\Comment')->orderBy('is_approved', 'ASC')->orderBy('created_at', 'DESC');
     }
 }

@@ -57,7 +57,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
 
     // SEARCH ROUTES--------------------------------------------------------------------------------------------
     Route::get('/search_users', 'Admin\UserController@search_users')->name('search_users');
-    Route::get('/search_posts', 'Admin\UserController@search_posts')->name('search_posts');
+    Route::get('/search_posts', 'Admin\PostController@search_posts')->name('search_posts');
     // Route::get('/search_customers', 'Admin\CustomerController@search_customers')->name('search_customers');
     // Route::get('/search_products', 'Admin\ProductController@search_products')->name('search_products');
     // Route::get('/search_ledgers', 'Admin\LedgerController@search_ledgers')->name('search_ledgers');
