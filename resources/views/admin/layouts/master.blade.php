@@ -129,6 +129,40 @@
                     </ul>
                 </li>
 
+                <!-- Product Management -->
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-blog"></i>
+                        <p>
+                            Product Management
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview ml-2">
+                        <!-- Categories -->
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-copyright"></i>
+                                <small>Categories</small>
+                            </a>
+                        </li>
+                        <!-- Brands -->
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fab fa-bootstrap"></i>
+                                <small>Brands</small>
+                            </a>
+                        </li>
+                        <!-- Units -->
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-balance-scale-left"></i>
+                                <small>Units</small>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <!-- user management -->
                 <li class="nav-item">
                     <a href="{{route('user.index')}}" class="nav-link">
