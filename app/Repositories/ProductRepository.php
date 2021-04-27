@@ -7,6 +7,9 @@ use App\Exceptions\Product\CreateProductException;
 use App\Exceptions\Product\UpdateProductException;
 use App\Exceptions\Product\DeleteProductException;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\Brand;
+use App\Models\Unit;
 use App\Models\User;
 
 abstract class ProductRepository implements RepositoryInterface
@@ -86,7 +89,7 @@ abstract class ProductRepository implements RepositoryInterface
     {
         try 
         {
-            $product = $this->model::with('comments.user')->find($id);
+            $product = $this->model->with('category', 'brand', 'unit', 'product_images')->find($id);
             if(!$product)
             {
                 return [
@@ -127,17 +130,32 @@ abstract class ProductRepository implements RepositoryInterface
     public function search_products($query)
     {
         // foreign fields
-        // users
-        $users = User::select('id')->where('name', 'LIKE', '%'.$query.'%')->get();
-        $user_ids = [];
-        foreach($users as $user){
-            array_push($user_ids, $user->id);
+        // categories
+        $categories = Category::select('id')->where('name', 'LIKE', '%'.$query.'%')->get();
+        $category_ids = [];
+        foreach($categories as $category){
+            array_push($category_ids, $category->id);
+        }
+        // brands
+        $brands = Brand::select('id')->where('name', 'LIKE', '%'.$query.'%')->get();
+        $brand_ids = [];
+        foreach($brands as $brand){
+            array_push($brand_ids, $brand->id);
+        }
+        // units
+        $units = Unit::select('id')->where('name', 'LIKE', '%'.$query.'%')->get();
+        $unit_ids = [];
+        foreach($units as $unit){
+            array_push($unit_ids, $unit->id);
         }
 
         // search block
-        $products = Product::where('title', 'LIKE', '%'.$query.'%')
-                        ->orWhereIn('user_id', $user_ids)
-                        // ->orWhere('content', 'LIKE', '%'.$query.'%')
+        $products = Product::where('name', 'LIKE', '%'.$query.'%')
+                        ->orWhere('price', 'LIKE', '%'.$query.'%')
+                        ->orWhere('description', 'LIKE', '%'.$query.'%')
+                        ->orWhereIn('category_id', $category_ids)
+                        ->orWhereIn('brand_id', $brand_ids)
+                        ->orWhereIn('unit_id', $unit_ids)
                         ->paginate(env('PAGINATION'));
 
         return $products;

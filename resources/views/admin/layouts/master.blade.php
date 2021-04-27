@@ -142,34 +142,41 @@
                 <!-- Product Management -->
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-blog"></i>
+                        <i class="nav-icon fab fa-product-hunt"></i>
                         <p>
                             Product Management
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview ml-2">
-                        <!-- Categories -->
-                        <li class="nav-item">
-                            <a href="{{route('category.index')}}" class="nav-link">
-                                <i class="nav-icon fas fa-copyright"></i>
-                                <small>Categories</small>
-                            </a>
-                        </li>
-                        <!-- Brands -->
-                        <li class="nav-item">
-                            <a href="{{route('brand.index')}}" class="nav-link">
-                                <i class="nav-icon fab fa-bootstrap"></i>
-                                <small>Brands</small>
-                            </a>
-                        </li>
-                        <!-- Units -->
-                        <li class="nav-item">
-                            <a href="{{route('unit.index')}}" class="nav-link">
-                                <i class="nav-icon fas fa-balance-scale-left"></i>
-                                <small>Units</small>
-                            </a>
-                        </li>
+                      <!-- Products -->
+                      <li class="nav-item">
+                          <a href="{{route('product.index')}}" class="nav-link">
+                              <i class="nav-icon fab fa-product-hunt"></i>
+                              <small>Products</small>
+                          </a>
+                      </li>
+                      <!-- Categories -->
+                      <li class="nav-item">
+                          <a href="{{route('category.index')}}" class="nav-link">
+                              <i class="nav-icon fas fa-copyright"></i>
+                              <small>Categories</small>
+                          </a>
+                      </li>
+                      <!-- Brands -->
+                      <li class="nav-item">
+                          <a href="{{route('brand.index')}}" class="nav-link">
+                              <i class="nav-icon fab fa-bootstrap"></i>
+                              <small>Brands</small>
+                          </a>
+                      </li>
+                      <!-- Units -->
+                      <li class="nav-item">
+                          <a href="{{route('unit.index')}}" class="nav-link">
+                              <i class="nav-icon fas fa-balance-scale-left"></i>
+                              <small>Units</small>
+                          </a>
+                      </li>
                     </ul>
                 </li>
 
