@@ -56,6 +56,10 @@ return [
             'driver' => 'local',
             'root' => public_path('img/posts'),
         ],
+        'public_brands' => [
+            'driver' => 'local',
+            'root' => public_path('img/brands'),
+        ],
 
     ],
 
