@@ -2,10 +2,18 @@
 
 @section('content_header')
 <div class="row mb-2">
-  <div class="col-sm-6">
-<h1 class="m-0 text-dark"><i class="nav-icon fas fa-users"></i> Users</h1>
-
-</div>
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        <h1 class="m-0 text-dark"><i class="nav-icon fas fa-users"></i> Users</h1>
+    </div>
 </div>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
@@ -291,6 +299,70 @@
             $('#deleteForm .hidden').val(id);
             $('#deleteUserModalLabel').text('Delete User: ' + $('.name' + id).html() + "?");
             $('#deleteUserModal').modal('show');
+        });
+
+        // Affirm | initiate checkout
+        affirm.checkout.open({
+            "merchant": {
+                "user_confirmation_url":    "https://merchantsite.com/confirm",
+                "user_cancel_url":          "https://merchantsite.com/cancel",
+                "user_confirmation_url_action": "POST",
+                "name": "Your Customer-Facing Merchant Name"
+            },
+            "shipping":{
+                "name":{
+                    "first":"Joe",
+                    "last":"Doe"
+                },
+                "address":{
+                    "line1":"633 Folsom St",
+                    "line2":"Floor 7",
+                    "city":"San Francisco",
+                    "state":"CA",
+                    "zipcode":"94107",
+                    "country":"USA"
+                },
+                "phone_number": "4153334567",
+                "email": "joedoe@123fakestreet.com"
+            },
+            "billing":{
+                "name":{
+                    "first":"Joe",
+                    "last":"Doe"
+                },
+                "address":{
+                    "line1":"633 Folsom St",
+                    "line2":"Floor 7",
+                    "city":"San Francisco",
+                    "state":"CA",
+                    "zipcode":"94107",
+                    "country":"USA"
+                },
+                "phone_number": "4153334567",
+                "email": "joedoe@123fakestreet.com"
+            },
+            "items": [{
+                "display_name":         "Awesome Pants",
+                "sku":                  "ABC-123",
+                "unit_price":           1999,
+                "qty":                  3,
+                "item_image_url":       "http://merchantsite.com/images/awesome-pants.jpg",
+                "item_url":             "http://merchantsite.com/products/awesome-pants.html",
+                "categories": [
+                    ["Home", "Bedroom"],
+                    ["Home", "Furniture", "Bed"]
+                ]
+            }],
+            "metadata":{
+                "shipping_type":"UPS Ground",
+                "mode":"modal"
+            },
+            "order_id":"JKLMO4321",
+            "currency":"USD",  
+            "financing_program":"flyus_3z6r12r",
+            "shipping_amount":4,
+            "tax_amount":4,
+            "total": 100000
         });
     });
 </script>

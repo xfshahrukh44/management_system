@@ -37,15 +37,12 @@ class PostController extends Controller
     
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'user_id' => 'required|int',
             'title' => 'required|string',
             'content' => 'required',
             'image' => 'sometimes'
         ]);
-
-        if($validator->fails())
-            return response()->json($validator->errors()->toArray(), 400);
 
         // image work
         $req = Arr::except($request->all(),['image']);
@@ -75,15 +72,12 @@ class PostController extends Controller
         $id = $request->hidden;
         $post = ($this->show($id))['post'];
 
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'user_id' => 'sometimes|int',
             'title' => 'sometimes|string',
             'content' => 'sometimes',
             'image' => 'sometimes'
         ]);
-
-        if($validator->fails())
-            return response()->json($validator->errors()->toArray(), 400);
 
         
         // image work

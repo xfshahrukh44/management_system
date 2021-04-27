@@ -2,7 +2,16 @@
 
 @section('content_header')
 <div class="row mb-2">
-  <div class="col-sm-6">
+  <div class="col-sm-12 col-md-12 col-lg-12">
+    @if ($errors->any())
+      <div class="alert alert-danger">
+          <ul>
+              @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+          </ul>
+      </div>
+    @endif
     <h1 class="m-0 text-dark"><i class="nav-icon fab fa-post-hunt"></i> Posts</h1>
   </div>
 </div>
