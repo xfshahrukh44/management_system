@@ -52,7 +52,12 @@ class BrandController extends Controller
         // create brand
         $brand = ($this->brandService->create($req))['brand']['brand'];
 
-        return redirect()->back();
+        if($request->dynamic){
+            return $brand;
+        }
+        else{
+            return redirect()->back();
+        }
     }
     
     public function show($id)

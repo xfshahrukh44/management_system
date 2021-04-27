@@ -37,7 +37,12 @@ class UnitController extends Controller
 
         $unit = ($this->unitService->create($request->all()))['unit']['unit'];
 
-        return redirect()->back();
+        if($request->dynamic){
+            return $unit;
+        }
+        else{
+            return redirect()->back();
+        }
     }
     
     public function show($id)

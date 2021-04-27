@@ -295,6 +295,98 @@
   </div>
 </div>
 
+<!-- Create category view -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="">Add new category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <!-- name -->
+                    <div class="form-group">
+                        <label for="">Name</label>
+                        <input id="categoryName" type="text" name="name" placeholder="Enter name"
+                        class="form-control name" required max="50">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="storeCategoryButton">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Create brand view -->
+<div class="modal fade" id="addBrandModal" tabindex="-1" role="dialog" aria-labelledby="addBrandModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="">Add new brand</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <!-- name -->
+                    <div class="form-group col-md-12 col-sm-3">
+                        <label>Name:</label>
+                        <input type="text" name="name" placeholder="Name" class="form-control name" required>
+                    </div>
+                    <!-- link -->
+                    <div class="form-group col-md-12 col-sm-3">
+                        <label>Link:</label>
+                        <input type="text" name="link" placeholder="Link" class="form-control link" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="storeBrandButton">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Create unit view -->
+<div class="modal fade" id="addUnitModal" tabindex="-1" role="dialog" aria-labelledby="addUnitModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="">Add new unit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <!-- name -->
+                    <div class="form-group col-md-12">
+                        <label for="">Name</label>
+                        <input type="text" name="name" placeholder="Enter name" class="form-control name" required>
+                    </div>
+                    <!-- slug -->
+                    <div class="form-group col-md-12">
+                        <label for="">Slug</label>
+                        <input type="text" name="slug" placeholder="Enter slug" class="form-control slug" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="storeUnitButton">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
 $(document).ready(function(){
     // $('#area_id').select2();
@@ -433,6 +525,68 @@ $(document).ready(function(){
         $('#deleteForm .hidden').val(id);
         $('#deleteProductModalLabel').text('Delete Product: ' + $('.name' + id).html() + "?");
         $('#deleteProductModal').modal('show');
+    });
+
+    // create category modal
+    $('.add_category').on('click', function(){
+        $('#addCategoryModal').modal('show');
+    });
+    // create category
+    $('#storeCategoryButton').on('click', function(){
+        var name = $('#addCategoryModal .name').val();
+        $('#addCategoryModal').modal('hide');
+        $.ajax({
+            url: "<?php echo(route('category.store')); ?>",
+            type: 'POST',
+            data: {"_token": "{{ csrf_token() }}", name: name, dynamic: true},
+            dataType: 'JSON',
+            success: function (data) {
+              $('.category_id').append("<option value='"+ data.id +"'>"+ data.name +"</option>");
+              $('#addCategoryModal .name').val("");
+            }
+        });
+    });
+    // create brand modal
+    $('.add_brand').on('click', function(){
+        $('#addBrandModal').modal('show');
+    });
+    // create brand
+    $('#storeBrandButton').on('click', function(){
+        var name = $('#addBrandModal .name').val();
+        var link = $('#addBrandModal .link').val();
+        $('#addBrandModal').modal('hide');
+        $.ajax({
+            url: "<?php echo(route('brand.store')); ?>",
+            type: 'POST',
+            data: {"_token": "{{ csrf_token() }}", name: name, link: link, dynamic: true},
+            dataType: 'JSON',
+            success: function (data) {
+              $('.brand_id').append("<option value='"+ data.id +"'>"+ data.name +"</option>");
+              $('#addBrandModal .name').val("");
+              $('#addBrandModal .link').val("");
+            }
+        });
+    });
+    // create unit modal
+    $('.add_unit').on('click', function(){
+        $('#addUnitModal').modal('show');
+    });
+    // create unit
+    $('#storeUnitButton').on('click', function(){
+        var name = $('#addUnitModal .name').val();
+        var slug = $('#addUnitModal .slug').val();
+        $('#addUnitModal').modal('hide');
+        $.ajax({
+            url: "<?php echo(route('unit.store')); ?>",
+            type: 'POST',
+            data: {"_token": "{{ csrf_token() }}", name: name, slug: slug, dynamic: true},
+            dataType: 'JSON',
+            success: function (data) {
+              $('.unit_id').append("<option value='"+ data.id +"'>"+ data.name +"</option>");
+              $('#addUnitModal .name').val("");
+              $('#addUnitModal .slug').val("");
+            }
+        });
     });
 
     // on btn_del_product_image click

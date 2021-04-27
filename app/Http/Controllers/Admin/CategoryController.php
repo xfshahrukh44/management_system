@@ -35,8 +35,13 @@ class CategoryController extends Controller
         ]);
 
         $category = ($this->categoryService->create($request->all()))['category']['category'];
-
-        return redirect()->back();
+        
+        if($request->dynamic){
+            return $category;
+        }
+        else{
+            return redirect()->back();
+        }
     }
     
     public function show($id)
