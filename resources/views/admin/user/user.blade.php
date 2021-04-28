@@ -61,45 +61,47 @@
 
                     <tbody>
                         @if(count($users) > 0)
-                        @foreach($users as $user)
-                        <tr role="row" class="odd">
-                            <!-- name -->
-                            <td class="{{'name'.$user->id}}">{{$user->name}}</td>
+                            @foreach($users as $user)
+                                @if($user->name != 'SuperAdmin')
+                                    <tr role="row" class="odd">
+                                        <!-- name -->
+                                        <td class="{{'name'.$user->id}}">{{$user->name}}</td>
 
-                            <!-- email -->
-                            @if($user->email == null)
-                                <td class="{{'email'.$user->id}}">---</td>
-                            @else
-                                <td class="{{'email'.$user->id}}">{{$user->email}}</td>
-                            @endif
+                                        <!-- email -->
+                                        @if($user->email == null)
+                                            <td class="{{'email'.$user->id}}">---</td>
+                                        @else
+                                            <td class="{{'email'.$user->id}}">{{$user->email}}</td>
+                                        @endif
 
-                            <!-- staff's type -->
-                            <td class="{{'type'.$user->id}}">{{$user->type}}</td>
+                                        <!-- staff's type -->
+                                        <td class="{{'type'.$user->id}}">{{$user->type}}</td>
 
-                            <!-- registration date -->
-                            @if($user->created_at == null)
-                            <td class="{{'created_at'.$user->id}}">---</td>
-                            @else
-                            <td class="{{'created_at'.$user->id}}">{{return_date($user->created_at)}}</td>
-                            @endif
+                                        <!-- registration date -->
+                                        @if($user->created_at == null)
+                                        <td class="{{'created_at'.$user->id}}">---</td>
+                                        @else
+                                        <td class="{{'created_at'.$user->id}}">{{return_date($user->created_at)}}</td>
+                                        @endif
 
-                            <!-- actions -->
-                            <td>
-                                <!-- View Profile -->
-                                <a href="#" class="viewProfileButton" data-id="{{$user->id}}" data-route="{{route('user.show',$user->id)}}">
-                                    <i class="fas fa-user green ml-1"></i>
-                                </a>
-                                <!-- Edit -->
-                                <a href="#" class="editButton" data-id="{{$user->id}}">
-                                    <i class="fas fa-edit blue ml-1"></i>
-                                </a>
-                                <!-- Delete -->
-                                <a href="#" class="deleteButton" data-id="{{$user->id}}">
-                                    <i class="fas fa-trash red ml-1"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        @endforeach
+                                        <!-- actions -->
+                                        <td>
+                                            <!-- View Profile -->
+                                            <a href="#" class="viewProfileButton" data-id="{{$user->id}}" data-route="{{route('user.show',$user->id)}}">
+                                                <i class="fas fa-user green ml-1"></i>
+                                            </a>
+                                            <!-- Edit -->
+                                            <a href="#" class="editButton" data-id="{{$user->id}}">
+                                                <i class="fas fa-edit blue ml-1"></i>
+                                            </a>
+                                            <!-- Delete -->
+                                            <a href="#" class="deleteButton" data-id="{{$user->id}}">
+                                                <i class="fas fa-trash red ml-1"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
                         @else
                             <tr><td colspan="5"><h6 align="center">No record(s) found</h6></td></tr>
                         @endif
