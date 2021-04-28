@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     Route::apiResources(['unit'=>'Admin\UnitController']);
     Route::apiResources(['product'=>'Admin\ProductController']);
     Route::apiResources(['product_image'=>'Admin\ProductImageController']);
+    Route::apiResources(['product_comment'=>'Admin\ProductCommentController']);
     // --------------------------------------------------------------
 
     // SEARCH ROUTES--------------------------------------------------------------------------------------------
@@ -53,6 +54,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     
     // HELPERS---------------------------------------------------------------------------------------------------------------
     Route::get('/approve_comment', 'Admin\CommentController@approve_comment')->name('approve_comment');
+    Route::get('/approve_product_comment', 'Admin\ProductCommentController@approve_product_comment')->name('approve_product_comment');
     // ----------------------------------------------------------------------------------------------------------------------
 });
 

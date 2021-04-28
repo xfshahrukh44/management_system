@@ -203,7 +203,7 @@
         <input id="hidden" type="hidden" name="hidden">
         @include('admin.product.product_master')
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" id="createButton">Update</button>
+          <button type="submit" class="btn btn-primary" id="updateButton">Update</button>
         </div>
       </form>
     </div>
@@ -224,42 +224,72 @@
 
             <!-- tables -->
             <div class="card-body row row overflow-auto col-md-12" style="height:36rem;">
-                <!-- main info -->
-                <div class="col-md-12" style="text-align: center;">
-                    <!-- product_image -->
-                    <img class="image" src="{{asset('img/logo.png')}}" width="200">
-                    <!-- name -->
-                    <h3 class="name"></h3>
-                    <hr style="color:gray;">
-                </div>
-                <!-- section 1 -->
-                <div class="col-md-12">
-                    <table class="table table-bordered table-striped">
-                        <tbody id="table_row_wrapper">
-                            <tr role="row" class="odd">
-                                <td class="">Category</td>
-                                <td class="category"></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="">Brand</td>
-                                <td class="brand"></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="">Unit</td>
-                                <td class="unit"></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="">Price</td>
-                                <td class="price"></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="">Description</td>
-                                <td class="description"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+              <!-- main info -->
+              <div class="col-md-12" style="text-align: center;">
+                  <!-- product_image -->
+                  <img class="image" src="{{asset('img/logo.png')}}" width="200">
+                  <!-- name -->
+                  <h3 class="name"></h3>
+                  <hr style="color:gray;">
+              </div>
+              <!-- section 1 -->
+              <div class="col-md-12">
+                <table class="table table-bordered table-striped">
+                  <tbody id="table_row_wrapper">
+                    <tr role="row" class="odd">
+                      <td class="">Category</td>
+                      <td class="category"></td>
+                    </tr>
+                    <tr role="row" class="odd">
+                      <td class="">Brand</td>
+                      <td class="brand"></td>
+                    </tr>
+                    <tr role="row" class="odd">
+                      <td class="">Unit</td>
+                      <td class="unit"></td>
+                    </tr>
+                    <tr role="row" class="odd">
+                      <td class="">Price</td>
+                      <td class="price"></td>
+                    </tr>
+                    <tr role="row" class="odd">
+                      <td class="">Description</td>
+                      <td class="description"></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <hr style="color:gray;">
+              </div>
               <div class="gallery_wrapper col-md-12 row p-4">
+              </div>
+              <!-- product_comment section -->
+              <div class="col-md-12 p-4 product_comment_section">
+                <h3 class="text-center">Comments</h3>
+                <table class="table table-bordered table-striped table-sm">
+                    <thead>
+                        <tr role="row" class="odd">
+                            <th>User</th>
+                            <th>Content</th>
+                            <th>Time</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_row_wrapper" class="product_comment_wrapper">
+                        <tr role="row" class="odd">
+                            <td class="product_comment_user">User</td>
+                            <td class="product_comment_content">asdasdasdas</td>
+                            <td class="product_comment_created_at">12.12.12</td>
+                            <td class="product_comment_content"><button type="button" class="btn btn-primary btn-sm">Approve</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+              <div class="col-md-12">
+                <label for="">Add comment</label>
+                <div class="row form-group p-4">
+                  <input type="text" class="form-control col-md-10 add_product_comment_content">
+                  <button type="button" class="form-control btn btn-primary btn-sm col-md-2 btn_add_product_comment" data-user={{(auth()->user()) ? (auth()->user()->id) : NULL}}><i class="fas fa-chevron-right"></i></button>
+                </div>
               </div>
             </div>
 
@@ -305,7 +335,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="editForm" method="POST" enctype="multipart/form-data">
+            <form id="editCateforyForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <!-- name -->
@@ -333,7 +363,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="editForm" method="POST" enctype="multipart/form-data">
+            <form id="editBrandForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <!-- name -->
@@ -365,7 +395,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="editForm" method="POST" enctype="multipart/form-data">
+            <form id="editUnitForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <!-- name -->
@@ -431,6 +461,63 @@ $(document).ready(function(){
                 product = data.product;
             }
         });
+    }
+
+    // approve_product_comment
+    function approve_product_comment(id, element){
+      $.ajax({
+          url: `<?php echo(route('approve_product_comment')); ?>`,
+          type: 'GET',
+          data: {
+            id: id
+          },
+          dataType: 'JSON',
+          async: false,
+          success: function (data) {
+            element.remove();
+            toastr["success"]("Comment Approved", "Success");
+          }
+      });
+    }
+
+    // delete_product_comment
+    function delete_product_comment(id, element){
+      var url = `<?php echo(route('product_comment.destroy', 0)); ?>`;
+      url = url.replace('0', id);
+      $.ajax({
+          url: url,
+          type: 'DELETE',
+          data: {
+            "_token": "{{ csrf_token() }}",
+            id: id
+          },
+          dataType: 'JSON',
+          async: false,
+          success: function (data) {
+            element.parent().parent().remove();
+            toastr["success"]("Comment Deleted", "Success");
+          }
+      });
+    }
+
+    // add_product_comment
+    function add_product_comment(product_id, user_id, product_comment_content){
+      console.log()
+      $.ajax({
+          url: `<?php echo(route('product_comment.store')); ?>`,
+          type: 'POST',
+          data: {
+            "_token": "{{ csrf_token() }}",
+            product_id: product_id,
+            user_id: user_id,
+            content: product_comment_content,
+          },
+          dataType: 'JSON',
+          async: false,
+          success: function (data) {
+            alert('Comment added.');
+          }
+      });
     }
 
     // delete_product_image
@@ -516,6 +603,29 @@ $(document).ready(function(){
                 $('.gallery_wrapper').append(`<div class="col-md-4 mb-3"><a target="_blank" href="{{asset('img/products')}}/`+product.product_images[i].location+`" class="col-md-12"><img class="col-md-12 product_image" src="{{asset('img/products')}}/`+product.product_images[i].location+`"></a><button class="btn btn_del_product_image" value="`+product.product_images[i].id+`" type="button"><i class="fas fa-trash red ml-1"></i></button></div>`);
             }
         }
+
+        // product_comments
+        if(product.product_comments.length > 0){
+          $('.product_comment_wrapper').html('');
+          for(var i = 0; i < product.product_comments.length; i++){
+            var product_comment = product.product_comments[i];
+
+            var user_div = `<td class="product_comment_user">`+(product_comment.user ? product_comment.user.name : '')+`</td>`;
+            var content_div = `<td class="product_comment_content">`+product_comment.content+`</td>`;
+            var date_div = `<td class="product_comment_created_at" width="140">`+new Date(product_comment.created_at).toDateString()+`</td>`;
+            var approve_button = (product_comment.is_approved == 0) ? (`@can('isAdmin')<a href="#" class="btn_approve_product_comment p-1" style="color:green;" data-id="`+product_comment.id+`"><i class="fas fa-check-double"></i></a>@endcan`) : (``);
+            var delete_button = `@can('isAdmin')<a href="#" class="btn_delete_product_comment p-1" style="color:red;" data-id="`+product_comment.id+`"><i class="fas fa-trash"></i></a>@endcan`;
+            var approve_div = `<td class="">`+ approve_button + delete_button +`</td>`;
+
+            var field_html = `<tr role="row" class="odd">`+user_div + content_div + date_div + approve_div+`</tr>`;
+            $('.product_comment_wrapper').append(field_html);
+          }
+        }
+        else{
+          $('.product_comment_wrapper').html('');
+          $('.product_comment_wrapper').append(`<tr><td colspan="4"><h6 align="center">No comments</h6></td></tr>`);
+        }
+
         $('#viewProductModal').modal('show');
     });
     // delete
@@ -525,6 +635,27 @@ $(document).ready(function(){
         $('#deleteForm .hidden').val(id);
         $('#deleteProductModalLabel').text('Delete Product: ' + $('.name' + id).html() + "?");
         $('#deleteProductModal').modal('show');
+    });
+
+    // on btn_approve_product_comment click
+    $('#viewProductModal').on('click', '.btn_approve_product_comment', function(){
+      var id = $(this).data('id');
+      approve_product_comment(id, $(this));
+    });
+    // on btn_delete_product_comment click
+    $('#viewProductModal').on('click', '.btn_delete_product_comment', function(){
+      var id = $(this).data('id');
+      delete_product_comment(id, $(this));
+    });
+    // on btn_add_product_comment click
+    $('#viewProductModal').on('click', '.btn_add_product_comment', function(){
+      var product_id = product.id;
+      var user_id = $(this).data('user');
+      var product_comment_content = $('.add_product_comment_content').val();
+      
+      if(product_comment_content.length > 0){
+        add_product_comment(product_id, user_id, product_comment_content);
+      }
     });
 
     // create category modal

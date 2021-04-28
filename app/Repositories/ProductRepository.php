@@ -89,7 +89,7 @@ abstract class ProductRepository implements RepositoryInterface
     {
         try 
         {
-            $product = $this->model->with('category', 'brand', 'unit', 'product_images')->find($id);
+            $product = $this->model->with('category', 'brand', 'unit', 'product_images', 'product_comments.user')->find($id);
             if(!$product)
             {
                 return [

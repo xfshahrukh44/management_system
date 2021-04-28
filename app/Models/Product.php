@@ -36,4 +36,9 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\ProductImage');
     }
+
+    public function product_comments()
+    {
+        return $this->hasMany('App\Models\ProductComment');
+    }
 }
