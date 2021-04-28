@@ -75,6 +75,45 @@
   }
 </style>
 
+<!-- rating styles -->
+<style>
+   .rating {
+      float:left;
+      border:none;
+  }
+  .rating:not(:checked) > input {
+      position:absolute;
+      top:-9999px;
+      clip:rect(0, 0, 0, 0);
+  }
+  .rating:not(:checked) > label {
+      float:right;
+      width:1em;
+      padding:0 .1em;
+      overflow:hidden;
+      white-space:nowrap;
+      cursor:pointer;
+      font-size:200%;
+      line-height:1.2;
+      color:#ddd;
+  }
+  .rating:not(:checked) > label:before {
+      content:'★ ';
+  }
+  .rating > input:checked ~ label {
+      color: #f70;
+  }
+  .rating:not(:checked) > label:hover, .rating:not(:checked) > label:hover ~ label {
+      color: gold;
+  }
+  .rating > input:checked + label:hover, .rating > input:checked + label:hover ~ label, .rating > input:checked ~ label:hover, .rating > input:checked ~ label:hover ~ label, .rating > label:hover ~ input:checked ~ label {
+      color: #ea0;
+  }
+  .rating > label:active {
+      position:relative;
+  }
+</style>
+
 @endsection
 
 @section('content_body')
@@ -230,7 +269,6 @@
                   <img class="image" src="{{asset('img/logo.png')}}" width="200">
                   <!-- name -->
                   <h3 class="name"></h3>
-                  <hr style="color:gray;">
               </div>
               <!-- section 1 -->
               <div class="col-md-12">
@@ -260,10 +298,13 @@
                 </table>
                 <hr style="color:gray;">
               </div>
+              <!-- Gallery -->
+              <h3 class="text-center col-md-12">Images</h3>
               <div class="gallery_wrapper col-md-12 row p-4">
               </div>
               <!-- product_comment section -->
               <div class="col-md-12 p-4 product_comment_section">
+                <hr style="color:gray;">
                 <h3 class="text-center">Comments</h3>
                 <table class="table table-bordered table-striped table-sm">
                     <thead>
@@ -284,11 +325,39 @@
                     </tbody>
                 </table>
               </div>
+              <!-- Add comment -->
               <div class="col-md-12">
                 <label for="">Add comment</label>
                 <div class="row form-group p-4">
                   <input type="text" class="form-control col-md-10 add_product_comment_content">
                   <button type="button" class="form-control btn btn-primary btn-sm col-md-2 btn_add_product_comment" data-user={{(auth()->user()) ? (auth()->user()->id) : NULL}}><i class="fas fa-chevron-right"></i></button>
+                </div>
+              </div>
+              <!-- Rate this product -->
+              <div class="col-md-12" style="text-align: center;">
+                <hr style="color:gray;">
+                <div class="container d-flex justify-content-center mt-100">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="card-body text-center">
+                          <h4 class="mt-1">Rate this product</h4>
+                          <fieldset class="rating p-3">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star5">5 stars</label>
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4">4 stars</label>
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3">3 stars</label>
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2">2 stars</label>
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label for="star1">1 star</label>
+                          </fieldset>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

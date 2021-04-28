@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     Route::apiResources(['product'=>'Admin\ProductController']);
     Route::apiResources(['product_image'=>'Admin\ProductImageController']);
     Route::apiResources(['product_comment'=>'Admin\ProductCommentController']);
+    Route::apiResources(['rating'=>'Admin\RatingController']);
     // --------------------------------------------------------------
 
     // SEARCH ROUTES--------------------------------------------------------------------------------------------
