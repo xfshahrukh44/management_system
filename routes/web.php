@@ -41,6 +41,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     Route::apiResources(['product_image'=>'Admin\ProductImageController']);
     Route::apiResources(['product_comment'=>'Admin\ProductCommentController']);
     Route::apiResources(['rating'=>'Admin\RatingController']);
+    Route::apiResources(['order'=>'Admin\OrderController']);
+    Route::apiResources(['order_product'=>'Admin\OrderProductController']);
     // --------------------------------------------------------------
 
     // SEARCH ROUTES--------------------------------------------------------------------------------------------
@@ -50,6 +52,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     Route::get('/search_brands', 'Admin\BrandController@search_brands')->name('search_brands');
     Route::get('/search_units', 'Admin\UnitController@search_units')->name('search_units');
     Route::get('/search_products', 'Admin\ProductController@search_products')->name('search_products');
+    Route::get('/search_orders', 'Admin\OrderController@search_orders')->name('search_orders');
     // ---------------------------------------------------------------------------------------------------------
     
     
