@@ -556,7 +556,7 @@ $(document).ready(function(){
           },
           dataType: 'JSON',
           success: function (data) {
-            console.log(data);
+            
           }
       });
     }
@@ -620,7 +620,6 @@ $(document).ready(function(){
 
     // add_product_comment
     function add_product_comment(product_id, user_id, product_comment_content){
-      console.log()
       $.ajax({
           url: `<?php echo(route('product_comment.store')); ?>`,
           type: 'POST',
@@ -881,21 +880,19 @@ $(document).ready(function(){
 
     // on image click (preview)
     $('#editForm .image').on('change', function(){
-        // console.log($(this)[0]);
-        // console.log($(this).parent().find('img'));
-        var input = ($(this))[0];
-        var preview_target = $(this).parent().find('img');
+      var input = ($(this))[0];
+      var preview_target = $(this).parent().find('img');
 
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
 
-            reader.onload = function (e) {
-                preview_target
-                        .attr('src', e.target.result);
-            };
+          reader.onload = function (e) {
+              preview_target
+                      .attr('src', e.target.result);
+          };
 
-            reader.readAsDataURL(input.files[0]);
-        }
+          reader.readAsDataURL(input.files[0]);
+      }
     });
 
     // on .rating click
