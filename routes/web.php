@@ -56,6 +56,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     // HELPERS---------------------------------------------------------------------------------------------------------------
     Route::get('/approve_comment', 'Admin\CommentController@approve_comment')->name('approve_comment');
     Route::get('/approve_product_comment', 'Admin\ProductCommentController@approve_product_comment')->name('approve_product_comment');
+    Route::get('/get_user_rating', 'Admin\RatingController@get_user_rating')->name('get_user_rating');
     // ----------------------------------------------------------------------------------------------------------------------
 });
 

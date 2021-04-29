@@ -269,6 +269,15 @@
                   <img class="image" src="{{asset('img/logo.png')}}" width="200">
                   <!-- name -->
                   <h3 class="name"></h3>
+                  <!-- ratings -->
+                  <div class="stars_wrapper">
+                    <i class="fas fa-star" style="color:gold;"></i>
+                    <i class="fas fa-star" style="color:gold;"></i>
+                    <i class="fas fa-star" style="color:gold;"></i>
+                    <i class="far fa-star" style="color:gold;"></i>
+                    <i class="far fa-star" style="color:gold;"></i>
+                  </div>
+                  <span class="ratings_numeric">3/5</span>
               </div>
               <!-- section 1 -->
               <div class="col-md-12">
@@ -342,6 +351,7 @@
                       <div class="card">
                         <div class="card-body text-center">
                           <h4 class="mt-1">Rate this product</h4>
+                          <input class="rating_user_id" type="hidden" value="{{auth()->user()->id}}">
                           <fieldset class="rating p-3">
                             <input type="radio" id="star5" name="rating" value="5" />
                             <label for="star5">5 stars</label>
@@ -532,6 +542,45 @@ $(document).ready(function(){
         });
     }
 
+    // submit rating
+    function submit_rating(user_id, product_id, stars){
+      $.ajax({
+          url: "<?php echo(route('rating.store')); ?>",
+          type: 'POST',
+          async: false,
+          data: {
+            "_token": "{{ csrf_token() }}",
+            user_id: user_id,
+            product_id: product_id,
+            stars: stars,
+          },
+          dataType: 'JSON',
+          success: function (data) {
+            console.log(data);
+          }
+      });
+    }
+    
+    // get_user_rating
+    function get_user_rating(user_id, product_id){
+      $.ajax({
+          url: "<?php echo(route('get_user_rating')); ?>",
+          type: 'GET',
+          async: false,
+          data: {
+            user_id: user_id,
+            product_id: product_id
+          },
+          dataType: 'JSON',
+          success: function (data) {
+            if(data != 0){
+              var el =$('.rating').find('#star' + data);
+              el.prop('checked', true);
+            }
+          }
+      });
+    }
+
     // approve_product_comment
     function approve_product_comment(id, element){
       $.ajax({
@@ -695,6 +744,35 @@ $(document).ready(function(){
           $('.product_comment_wrapper').append(`<tr><td colspan="4"><h6 align="center">No comments</h6></td></tr>`);
         }
 
+        // ratings
+        $('.stars_wrapper').html('');
+        if(product.ratings.length > 0){
+          // get star value
+          var stars = 0;
+          for(var i = 0; i < product.ratings.length; i++){
+            stars += parseInt(product.ratings[i].stars);
+          }
+          stars /= product.ratings.length;
+          
+          // append stars
+          for(var i = 0; i < 5; i++){
+            if(i <= parseInt(stars) - 1){
+              $('.stars_wrapper').append('<i class="fas fa-star" style="color:gold;"></i>');
+            }
+            else{
+              $('.stars_wrapper').append('<i class="far fa-star" style="color:gold;"></i>');
+            }
+          }
+
+          // set numeric rating
+          $('.ratings_numeric').html(stars + '/5');
+        }
+
+        // get_user_rating
+        var user_id = $('.rating_user_id').val();
+        var product_id = product.id;
+        get_user_rating(user_id, product_id);
+
         $('#viewProductModal').modal('show');
     });
     // delete
@@ -818,6 +896,22 @@ $(document).ready(function(){
 
             reader.readAsDataURL(input.files[0]);
         }
+    });
+
+    // on .rating click
+    $('.rating').on('click', function(){
+      var stars = 0;
+
+      $(this).find('input').each(function(el){
+        if($(this).prop('checked')){
+          stars = $(this).val();
+        }
+      });
+      
+      var user_id = $('.rating_user_id').val();
+      var product_id = product.id;
+
+      submit_rating(user_id, product_id, stars);
     });
 });
 </script>

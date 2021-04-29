@@ -41,4 +41,9 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\ProductComment');
     }
+
+    public function ratings()
+    {
+        return $this->hasMany('App\Models\rating');
+    }
 }

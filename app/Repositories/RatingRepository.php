@@ -87,7 +87,7 @@ abstract class RatingRepository implements RepositoryInterface
     {
         try 
         {
-            $rating = $this->model::with('user', 'prooduct')->find($id);
+            $rating = $this->model->find($id);
             if(!$rating)
             {
                 return [
@@ -123,5 +123,13 @@ abstract class RatingRepository implements RepositoryInterface
         catch (\Exception $exception) {
             throw new AllRatingException($exception->getMessage());
         }
+    }
+
+    public function get_user_rating($data)
+    {
+        if(!$rating = $this->model->where('user_id', $data['user_id'])->where('product_id', $data['product_id'])->first()){
+            return 0;
+        }
+        return $rating->stars;
     }
 }

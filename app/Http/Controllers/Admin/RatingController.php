@@ -85,4 +85,9 @@ class RatingController extends Controller
         // return redirect()->back();
         return 0;
     }
+
+    public function get_user_rating(Request $request)
+    {
+        return $this->ratingService->get_user_rating($request->all());
+    }
 }
