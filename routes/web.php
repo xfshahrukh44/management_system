@@ -19,18 +19,18 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// ADMIN PANEL ROUTES---------------------------------------
+// ADMIN PANEL ROUTES---------------------------------------------------------------------------------------------------------------------
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     // DASHBOARD
     Route::get('/', function () {
         return redirect()->route('dashboard');
     });
 
-    // BLADE INDEXES----------------------------------------------------------------
+    // BLADE INDEXES---------------------------------------------------------------
     Route::get('/dashboard', 'Admin\DashboardController@index')->name('dashboard');
     // ----------------------------------------------------------------------------
 
-    // API RESOURCES-------------------------------------------------
+    // API RESOURCES-----------------------------------------------------------
     Route::apiResources(['user'=>'Admin\UserController']);
     Route::apiResources(['post'=>'Admin\PostController']);
     Route::apiResources(['comment'=>'Admin\CommentController']);
@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     Route::apiResources(['rating'=>'Admin\RatingController']);
     Route::apiResources(['order'=>'Admin\OrderController']);
     Route::apiResources(['order_product'=>'Admin\OrderProductController']);
-    // --------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     // SEARCH ROUTES--------------------------------------------------------------------------------------------
     Route::get('/search_users', 'Admin\UserController@search_users')->name('search_users');
@@ -56,11 +56,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function() {
     // ---------------------------------------------------------------------------------------------------------
     
     
-    // HELPERS---------------------------------------------------------------------------------------------------------------
+    // HELPERS------------------------------------------------------------------------------------------------------------------------
     Route::get('/approve_comment', 'Admin\CommentController@approve_comment')->name('approve_comment');
     Route::get('/approve_product_comment', 'Admin\ProductCommentController@approve_product_comment')->name('approve_product_comment');
     Route::get('/get_user_rating', 'Admin\RatingController@get_user_rating')->name('get_user_rating');
-    // ----------------------------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------------------------------
 });
-
+// ---------------------------------------------------------------------------------------------------------------------------------------
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
