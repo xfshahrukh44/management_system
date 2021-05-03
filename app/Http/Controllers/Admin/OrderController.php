@@ -5,22 +5,26 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\OrderService;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
     private $orderService;
+    private $userService;
 
-    public function __construct(OrderService $orderService)
+    public function __construct(OrderService $orderService, UserService $userService)
     {
         $this->orderService = $orderService;
+        $this->userService = $userService;
         $this->middleware('auth');
     }
 
     public function index()
     {
         $orders = $this->orderService->paginate(env('PAGINATE'));
-        return view('admin.order.order', compact('orders'));
+        $users = $this->userService->all();
+        return view('admin.order.order', compact('orders', 'users'));
     }
 
     public function all()
@@ -87,8 +91,9 @@ class OrderController extends Controller
         $query = $request['query'];
         
         $orders = $this->orderService->search_orders($query);
+        $users = $this->userService->all();
 
-        return view('admin.order.order', compact('orders'));
+        return view('admin.order.order', compact('orders', 'users'));
     }
     
 }

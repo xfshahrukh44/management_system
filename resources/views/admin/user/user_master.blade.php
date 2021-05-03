@@ -27,4 +27,10 @@
             <option value="User">User</option>
         </select>
     </div>
+    <!-- twitter_username -->
+    <div class="form-group">
+        <label for="">Twitter Username</label>
+        <input type="text" name="twitter_username" placeholder="@"
+        class="form-control twitter_username" max="50">
+    </div>
 </div>

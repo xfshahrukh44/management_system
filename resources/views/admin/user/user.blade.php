@@ -243,6 +243,24 @@
         // persistent active sidebar
         var element = $('li a[href*="'+ window.location.pathname +'"]');
         element.parent().parent().parent().addClass('menu-open');
+
+        // global vars
+        user = "";
+
+        // fetch user
+        function fetch_user(id){
+            // fetch user
+            $.ajax({
+                url: "<?php echo(route('user.show', 1)); ?>",
+                type: 'GET',
+                async: false,
+                data: {id: id},
+                dataType: 'JSON',
+                success: function (data) {
+                    user = data.user;
+                }
+            });
+        }
         //*** View Profile ***//
         $('.viewProfileButton').on('click', function(){
             var id = $(this).data('id');
@@ -287,11 +305,13 @@
         //*** edit ***//
         $('.editButton').on('click', function(){
             var id = $(this).data('id');
+            fetch_user(id);
             $('#editForm').attr('action', "{{route('user.update', 1)}}");
             $('#hidden').val(id);
-            $('#editForm .name').val($('.name' + id).html());
-            $('#editForm .email').val($('.email' + id).html());
-            $('#editForm .type').val($('.type' + id).html());
+            $('#editForm .name').val(user.name);
+            $('#editForm .email').val(user.email);
+            $('#editForm .type').val(user.type);
+            $('#editForm .twitter_username').val(user.twitter_username);
             $('#editUserModal').modal('show');
         });
         // delete
@@ -304,68 +324,68 @@
         });
 
         // Affirm | initiate checkout
-        affirm.checkout.open({
-            "merchant": {
-                "user_confirmation_url":    "https://merchantsite.com/confirm",
-                "user_cancel_url":          "https://merchantsite.com/cancel",
-                "user_confirmation_url_action": "POST",
-                "name": "Your Customer-Facing Merchant Name"
-            },
-            "shipping":{
-                "name":{
-                    "first":"Joe",
-                    "last":"Doe"
-                },
-                "address":{
-                    "line1":"633 Folsom St",
-                    "line2":"Floor 7",
-                    "city":"San Francisco",
-                    "state":"CA",
-                    "zipcode":"94107",
-                    "country":"USA"
-                },
-                "phone_number": "4153334567",
-                "email": "joedoe@123fakestreet.com"
-            },
-            "billing":{
-                "name":{
-                    "first":"Joe",
-                    "last":"Doe"
-                },
-                "address":{
-                    "line1":"633 Folsom St",
-                    "line2":"Floor 7",
-                    "city":"San Francisco",
-                    "state":"CA",
-                    "zipcode":"94107",
-                    "country":"USA"
-                },
-                "phone_number": "4153334567",
-                "email": "joedoe@123fakestreet.com"
-            },
-            "items": [{
-                "display_name":         "Awesome Pants",
-                "sku":                  "ABC-123",
-                "unit_price":           1999,
-                "qty":                  3,
-                "item_image_url":       "http://merchantsite.com/images/awesome-pants.jpg",
-                "item_url":             "http://merchantsite.com/products/awesome-pants.html",
-                "categories": [
-                    ["Home", "Bedroom"],
-                    ["Home", "Furniture", "Bed"]
-                ]
-            }],
-            "metadata":{
-                "shipping_type":"UPS Ground",
-                "mode":"modal"
-            },
-            "order_id":"JKLMO4321",
-            "currency":"USD",  
-            "financing_program":"flyus_3z6r12r",
-            "shipping_amount":4,
-            "tax_amount":4,
-            "total": 100000
-        });
+        // affirm.checkout.open({
+        //     "merchant": {
+        //         "user_confirmation_url":    "https://merchantsite.com/confirm",
+        //         "user_cancel_url":          "https://merchantsite.com/cancel",
+        //         "user_confirmation_url_action": "POST",
+        //         "name": "Your Customer-Facing Merchant Name"
+        //     },
+        //     "shipping":{
+        //         "name":{
+        //             "first":"Joe",
+        //             "last":"Doe"
+        //         },
+        //         "address":{
+        //             "line1":"633 Folsom St",
+        //             "line2":"Floor 7",
+        //             "city":"San Francisco",
+        //             "state":"CA",
+        //             "zipcode":"94107",
+        //             "country":"USA"
+        //         },
+        //         "phone_number": "4153334567",
+        //         "email": "joedoe@123fakestreet.com"
+        //     },
+        //     "billing":{
+        //         "name":{
+        //             "first":"Joe",
+        //             "last":"Doe"
+        //         },
+        //         "address":{
+        //             "line1":"633 Folsom St",
+        //             "line2":"Floor 7",
+        //             "city":"San Francisco",
+        //             "state":"CA",
+        //             "zipcode":"94107",
+        //             "country":"USA"
+        //         },
+        //         "phone_number": "4153334567",
+        //         "email": "joedoe@123fakestreet.com"
+        //     },
+        //     "items": [{
+        //         "display_name":         "Awesome Pants",
+        //         "sku":                  "ABC-123",
+        //         "unit_price":           1999,
+        //         "qty":                  3,
+        //         "item_image_url":       "http://merchantsite.com/images/awesome-pants.jpg",
+        //         "item_url":             "http://merchantsite.com/products/awesome-pants.html",
+        //         "categories": [
+        //             ["Home", "Bedroom"],
+        //             ["Home", "Furniture", "Bed"]
+        //         ]
+        //     }],
+        //     "metadata":{
+        //         "shipping_type":"UPS Ground",
+        //         "mode":"modal"
+        //     },
+        //     "order_id":"JKLMO4321",
+        //     "currency":"USD",  
+        //     "financing_program":"flyus_3z6r12r",
+        //     "shipping_amount":4,
+        //     "tax_amount":4,
+        //     "total": 100000
+        // });
     });
 </script>
 @endsection('content_body')

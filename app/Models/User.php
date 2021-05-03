@@ -20,7 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'type'
+        'type',
+        'twitter_username',
     ];
 
     /**
@@ -59,6 +60,11 @@ class User extends Authenticatable
 
     public function ratings()
     {
-        return $this->hasMany('App\Models\rating');
+        return $this->hasMany('App\Models\Rating');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany('App\Models\Order');
     }
 }

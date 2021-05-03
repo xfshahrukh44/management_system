@@ -112,6 +112,18 @@
                     </a>
                 </li>
 
+                <!-- Your Twitter feed -->
+                @if(auth()->user()->twitter_username)
+                  <li class="nav-item">
+                      <a href="{{route('dashboard')}}" class="nav-link">
+                        <i class="nav-icon fab fa-twitter "></i>
+                        <p>
+                          Your Twitter feed
+                        </p>
+                      </a>
+                  </li>
+                @endif
+
                 <!-- Blog Management -->
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
@@ -156,6 +168,13 @@
                               <small>Products</small>
                           </a>
                       </li>
+                      <!-- Orders -->
+                      <li class="nav-item">
+                          <a href="{{route('order.index')}}" class="nav-link">
+                              <i class="nav-icon fas fa-shopping-bag"></i>
+                              <small>Orders</small>
+                          </a>
+                      </li>
                       <!-- Categories -->
                       <li class="nav-item">
                           <a href="{{route('category.index')}}" class="nav-link">
@@ -181,14 +200,16 @@
                 </li>
 
                 <!-- user management -->
-                <li class="nav-item">
-                    <a href="{{route('user.index')}}" class="nav-link">
-                      <i class="nav-icon fas fa-user "></i>
-                      <p>
-                        User Management
-                      </p>
-                    </a>
-                </li>
+                @can('isAdmin')
+                  <li class="nav-item">
+                      <a href="{{route('user.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-user "></i>
+                        <p>
+                          User Management
+                        </p>
+                      </a>
+                  </li>
+                @endcan
             </ul>
         </nav>
       <!-- /.sidebar-menu -->

@@ -33,6 +33,8 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'password' => 'required|string|min:4',
             'email' => 'required|unique:users,email',
+            // 'twitter_username' => 'sometimes|unique:users,twitter_username',
+            'twitter_username' => 'sometimes',
         ]);
         
         if(!isset($request['type'])){
@@ -54,9 +56,10 @@ class UserController extends Controller
     
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $id = $request->hidden;
         
-        if(!(auth()->user()->id == $id || auth()->user()->type == "admin"))
+        if(!(auth()->user()->id == $id || auth()->user()->type == "Admin"))
         {
             return redirect()->back();
         }
@@ -65,6 +68,8 @@ class UserController extends Controller
             'name' => 'sometimes|string|max:255',
             'password' => 'sometimes',
             'email' => 'sometimes|unique:users,email,'.$request->hidden,
+            // 'twitter_username' => 'sometimes|unique:users,twitter_username,'.$request->hidden,
+            'twitter_username' => 'sometimes',
         ]);
 
         if($request->password == NULL){
