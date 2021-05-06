@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
+use Rainwater\Active\Active;
 
 class DashboardController extends Controller
 {
@@ -34,6 +35,12 @@ class DashboardController extends Controller
             return $obj['created_at'];
         });            
 
+        // current online users
+        $users = Active::users(3)->get();   				// Last 3 minutes
+        $users = Active::usersWithinSeconds(30)->get();  	// Get active users within the last 30 seconds
+        $users = Active::usersWithinMinutes(10)->get();  	// Get active users within the last 10 minutes
+        $users = Active::usersWithinHours(1)->get();     	// Get active users within the last 1 hour
+        // echo($users);
         return view('admin.post.feed', compact('tweets'));
     }
 }
